@@ -14,7 +14,7 @@ Count rows that repeat another row completely. Run on every table; duplicates we
 SELECT
   COUNT(*) AS total_rows,
   COUNT(*) - COUNT(DISTINCT TO_JSON_STRING(t)) AS duplicate_rows
-FROM `Bellabeat_study.minuteSleep_merged` t
+FROM `Bellabeat_study.minuteSleep_merged` AS t
 ```
 
 **Result:** 525 duplicate rows.
