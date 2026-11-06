@@ -8,6 +8,7 @@ Source data was loaded into BigQuery and checked before analysis.
 | Missing values | `Fat` empty in 31 of 33 weight records; no missing values in the other tables | `Fat` not used in analysis |
 | Zero-step days | 61 of 457 days (13%), 14 of 35 users | Kept; excluded from step averages, counted as non-use days |
 | Date format | Text with AM/PM in 10 of 11 tables | Converted to `DATETIME` |
+| Incomplete days | 224 of 457 days sum to under 1,440 min; in 199 the gap matches minutes asleep (188 within 30 min) | Kept; not treated as missing data |
 
 ## 1. Duplicates
 
@@ -96,6 +97,52 @@ SELECT
   StepTotal
 FROM `Bellabeat_study.hourlySteps_merged`
 ```
+
+## 5. Incomplete days
+
+In 224 of 457 days the four activity categories (very active, fairly active, lightly active, sedentary minutes) add up to less than 1,440 minutes. Hypothesis: the missing minutes are time asleep, which these categories do not include.
+
+How many days fall short, and by how much:
+
+```sql
+SELECT
+  CASE
+    WHEN total_min >= 1300 THEN 'almost full day'
+    WHEN total_min >= 720 THEN 'more than half day'
+    ELSE 'under half day'
+  END AS coverage,
+  COUNT(*) AS days
+FROM (
+  SELECT VeryActiveMinutes + FairlyActiveMinutes + LightlyActiveMinutes + SedentaryMinutes AS total_min
+  FROM `Bellabeat_study.dailyActivity_merged`
+)
+WHERE total_min < 1440
+GROUP BY coverage
+```
+
+**Result:** 17 almost full, 178 more than half a day, 29 under half a day.
+
+Does the gap equal minutes asleep:
+
+```sql
+WITH sleep_per_day AS (
+  SELECT Id, DATE(date) AS day, COUNT(*) AS sleep_min
+  FROM `Bellabeat_study.minuteSleep_clean_parse`
+  GROUP BY Id, day
+)
+SELECT
+  COUNT(*) AS days_with_sleep,
+  COUNTIF(
+    ABS(1440 - (a.VeryActiveMinutes + a.FairlyActiveMinutes + a.LightlyActiveMinutes + a.SedentaryMinutes) - s.sleep_min) <= 30
+  ) AS gap_matches_sleep
+FROM `Bellabeat_study.dailyActivity_merged` AS a
+JOIN sleep_per_day AS s
+  ON a.Id = s.Id AND a.ActivityDate = s.day
+```
+
+**Result:** 199 days with sleep data; in 188 (94%) the gap is within 30 minutes of minutes asleep.
+**Conclusion:** most incomplete days are explained by sleep, not by missing data or an empty battery. The remaining 25 incomplete days have no sleep record and stay unexplained.
+**Action:** days kept; no assumption about battery or non-wear is made from them.
 
 The same pattern was applied to every table; only the table and column names change.
 
