@@ -7,6 +7,7 @@ Source data was loaded into BigQuery and checked before analysis.
 | Duplicates | 525 duplicate rows in `minuteSleep` | Removed (saved as `minuteSleep_clean`) |
 | Missing values | `Fat` empty in 31 of 33 weight records; no missing values in the other tables | `Fat` not used in analysis |
 | Zero-step days | 61 of 457 days (13%), 14 of 35 users | Kept; excluded from step averages, counted as non-use days |
+| Date format | Text with AM/PM in 10 of 11 tables | Converted to `DATETIME` |
 
 ## 1. Duplicates
 
@@ -74,3 +75,29 @@ SELECT
 
 **Result:** 14 of 35 users.
 **Action:** rows kept. Excluded from step averages, but counted as non-use days when measuring how often people use their devices.
+
+
+## 4. Date formats
+
+Dates in 10 of the 11 tables were stored as text with AM/PM (e.g. `4/12/2016 12:00:00 AM`):
+
+- hourly: `hourlySteps`, `hourlyCalories`, `hourlyIntensities`
+- minute-level: `minuteStepsNarrow`, `minuteCaloriesNarrow`, `minuteIntensitiesNarrow`, `minuteMETsNarrow`, `minuteSleep`
+- `weightLogInfo`
+- `heartrate_seconds`
+
+They were converted to `DATETIME` and saved in new tables; row counts were checked against the originals. `minuteSleep` was parsed from the de-duplicated table `minuteSleep_clean` and saved as `minuteSleep_clean_parse`. `dailyActivity` already had a `DATE` column and needed no conversion.
+
+```sql
+CREATE OR REPLACE TABLE `Bellabeat_study.hourlySteps_clean` AS
+SELECT
+  Id,
+  PARSE_DATETIME('%m/%d/%Y %I:%M:%S %p', ActivityHour) AS activity_hour,
+  StepTotal
+FROM `Bellabeat_study.hourlySteps_merged`
+```
+
+The same pattern was applied to every table; only the table and column names change.
+
+**Result:** every converted table has the same number of rows as its original.
+**Action:** analysis uses the converted tables.
