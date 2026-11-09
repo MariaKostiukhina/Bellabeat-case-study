@@ -9,6 +9,7 @@ Source data was loaded into BigQuery and checked before analysis.
 | Zero-step days | 61 of 457 days (13%), 14 of 35 users | Kept; excluded from step averages, counted as non-use days |
 | Date format | Text with AM/PM in 10 of 11 tables | Converted to `DATETIME` |
 | Incomplete days | 224 of 457 days sum to under 1,440 min; in 199 the gap matches minutes asleep (188 within 30 min) | Kept; not treated as missing data |
+| Daily vs hourly coverage | Hourly tables cover 1,021 user-days, `dailyActivity` only 457; one user (`4388161847`) is missing from the hourly tables | Usage frequency is counted from the hourly tables; `dailyActivity` used for daily totals only |
 
 ## 1. Duplicates
 
@@ -143,6 +144,35 @@ JOIN sleep_per_day AS s
 **Result:** 199 days with sleep data; in 188 (94%) the gap is within 30 minutes of minutes asleep.
 **Conclusion:** most incomplete days are explained by sleep, not by missing data or an empty battery. The remaining 25 incomplete days have no sleep record and stay unexplained.
 **Action:** days kept; no assumption about battery or non-wear is made from them.
+
+## 6. Coverage: daily vs hourly tables
+
+The daily and hourly tables should describe the same days, but the hourly tables contain more than twice as many user-days.
+
+```sql
+SELECT
+  (SELECT COUNT(*)
+   FROM (SELECT DISTINCT Id, DATE(activity_hour) AS day
+         FROM `Bellabeat_study.hourlySteps_clean`)) AS hourly_user_days,
+  (SELECT COUNT(*)
+   FROM `Bellabeat_study.dailyActivity_merged`) AS daily_user_days
+```
+
+**Result:** 1,021 user-days in the hourly tables vs 457 in `dailyActivity`.
+
+One user is present in `dailyActivity` but absent from the hourly tables:
+
+```sql
+SELECT DISTINCT Id
+FROM `Bellabeat_study.dailyActivity_merged`
+WHERE Id NOT IN (
+  SELECT DISTINCT Id
+  FROM `Bellabeat_study.hourlySteps_clean`
+)
+```
+
+**Result:** user `4388161847`.
+**Action:** how often people wear the tracker is measured from the hourly tables, because `dailyActivity` covers less than half of the days they contain. `dailyActivity` is used only for daily totals.
 
 The same pattern was applied to every table; only the table and column names change.
 
