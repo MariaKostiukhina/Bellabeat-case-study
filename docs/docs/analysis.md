@@ -25,7 +25,7 @@ SELECT
 | Heart rate | 14 | 40% |
 | Weight | 11 | 31% |
 
-**Takeaway:** almost everyone tracks activity; the further a metric is from basic activity, the fewer people use it.
+**Takeaway:** all 35 users track activity, but only two thirds track sleep, 40% heart rate and under a third weight. Activity is the core feature people use; the others reach far fewer users.
 
 ## Finding 2: how regularly do people wear the tracker?
 
