@@ -96,6 +96,28 @@ ORDER BY hour_of_day
 
 **Takeaway:** Takeaway: daytime activity is fairly even across all users (about 390–530 steps per hour between 9h and 19h), and the data does not show a clear inactive period. The profession of the users is unknown, so no conclusion about sedentary work is drawn. Reminders at specific hours are not recommended based on this check.
 
-## Finding 3: when does activity drop?
+## Finding 3: how regularly do people log sleep?
 
-_(to be added)_
+Sleep is recorded minute by minute; a night is counted as a calendar date with at least one sleep record, so counts are approximate (the sleep data starts one day before the activity data).
+
+Nights logged per user:
+
+```sql
+-- твой запрос: Id и night_logged
+```
+
+Users grouped by nights logged:
+
+```sql
+-- твой запрос с CASE: sleep_group и users
+```
+
+**Result:**
+
+| Nights logged | Users | Share of 23 |
+|---|---|---|
+| 28–33 | 9 | 40% |
+| 15–27 | 7 | 30% |
+| under 15 | 7 | 30% |
+
+**Takeaway:** 23 of 35 users logged sleep at all. Among them 9 (39%) logged 28–33 nights, 7 (30%) logged 15–27 nights and 7 (30%) fewer than 15. Counted over all 35 users, only 9 (26%) logged sleep almost every night, versus 62% who wore the tracker almost every day.
