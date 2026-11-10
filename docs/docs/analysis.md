@@ -80,6 +80,22 @@ GROUP BY usage_group
 
 **Takeaway:** the majority of users (21 of 34, 62%) wore the tracker on 28–32 of the 32 days, so most people use it almost daily. 8 users (24%) wore it 15–27 days, and 5 users (14%) fewer than 15 days.
 
+## Also checked: activity by hour of day
+
+Average steps per hour of the day across all users, to see whether reminders at specific hours would make sense.
+
+```sql
+SELECT
+  EXTRACT(HOUR FROM activity_hour) AS hour_of_day,
+  ROUND(AVG(StepTotal)) AS avg_steps
+FROM `Bellabeat_study.hourlySteps_clean`
+GROUP BY hour_of_day
+ORDER BY hour_of_day
+```
+**Result:** activity is close to zero at night (1–5h), rises from 6h, and stays at roughly 390–530 steps per hour between 9h and 19h, with peaks at 12h (521) and 19h (529). The lowest daytime hour is 15h (390).
+
+**Takeaway:** daytime activity is fairly even, and the data does not show a clear inactive period. The profession of the users is unknown, so no conclusion about sedentary work is drawn. Reminders at specific hours are not recommended based on this check.
+
 ## Finding 3: when does activity drop?
 
 _(to be added)_
