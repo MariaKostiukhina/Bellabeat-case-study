@@ -94,7 +94,7 @@ ORDER BY hour_of_day
 ```
 **Result:** activity is close to zero at night (1–5h), rises from 6h, and stays at roughly 390–530 steps per hour between 9h and 19h, with peaks at 12h (521) and 19h (529). The lowest daytime hour is 15h (390).
 
-**Takeaway:** Takeaway: daytime activity is fairly even across all users, so no general reminder hours can be recommended. This average may hide differences between individuals; personalised reminders based on each user’s own activity pattern are a hypothesis to test, not a result of this analysis.
+**Takeaway:** Takeaway: daytime activity is fairly even across all users (about 390–530 steps per hour between 9h and 19h), and the data does not show a clear inactive period. The profession of the users is unknown, so no conclusion about sedentary work is drawn. Reminders at specific hours are not recommended based on this check.
 
 ## Finding 3: when does activity drop?
 
