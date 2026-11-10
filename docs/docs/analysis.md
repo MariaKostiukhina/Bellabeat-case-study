@@ -29,7 +29,56 @@ SELECT
 
 ## Finding 2: how regularly do people wear the tracker?
 
-_(to be added)_
+A "worn day" is a day with more than zero steps in the hourly data (zero-step days are treated as the tracker not being worn). Hourly tables are used because `dailyActivity` contains only 457 of the 1,021 user-days they cover (see `data_checks.md`, section 6). The period is 32 days.
+
+Worn days per user:
+
+```sql
+SELECT
+  Id,
+  COUNT(*) AS days_worn
+FROM (
+  SELECT Id, DATE(activity_hour) AS day
+  FROM `Bellabeat_study.hourlySteps_clean`
+  GROUP BY Id, day
+  HAVING SUM(StepTotal) > 0
+)
+GROUP BY Id
+ORDER BY days_worn DESC
+```
+
+Users grouped by how many days they wore the tracker:
+
+```sql
+SELECT
+  CASE
+    WHEN days_worn >= 28 THEN '28-32 days'
+    WHEN days_worn >= 15 THEN '15-27 days'
+    ELSE 'under 15 days'
+  END AS usage_group,
+  COUNT(*) AS users
+FROM (
+  SELECT Id, COUNT(*) AS days_worn
+  FROM (
+    SELECT Id, DATE(activity_hour) AS day
+    FROM `Bellabeat_study.hourlySteps_clean`
+    GROUP BY Id, day
+    HAVING SUM(StepTotal) > 0
+  )
+  GROUP BY Id
+)
+GROUP BY usage_group
+```
+
+**Result** (34 users in the hourly tables):
+
+| Days worn | Users | Share |
+|---|---|---|
+| 28-32 days | 21 | 62% |
+| 15-27 days | 8 | 24% |
+| under 15 days | 5 | 14% |
+
+**Takeaway:** the majority of users (21 of 34, 62%) wore the tracker on 28–32 of the 32 days, so most people use it almost daily. 8 users (24%) wore it 15–27 days, and 5 users (14%) fewer than 15 days.
 
 ## Finding 3: when does activity drop?
 
