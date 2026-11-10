@@ -139,4 +139,4 @@ GROUP BY sleep_group
 | 15–27 | 7 | 30% |
 | under 15 | 7 | 30% |
 
-**Takeaway:** 23 of 35 users logged sleep at all. Among them 9 (39%) logged 28–33 nights, 7 (30%) logged 15–27 nights and 7 (30%) fewer than 15. Counted over all 35 users, only 9 (26%) logged sleep almost every night, versus 62% who wore the tracker almost every day.
+**Takeaway:** 23 of 35 users logged sleep at all. Among them 9 (40%) logged 28–33 nights, 7 (30%) logged 15–27 nights and 7 (30%) fewer than 15. Counted over all 35 users, only 9 (26%) logged sleep almost every night, versus 62% who wore the tracker almost every day.
