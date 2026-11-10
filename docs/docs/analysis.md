@@ -103,7 +103,7 @@ Sleep is recorded minute by minute; a night is counted as a calendar date with a
 Nights logged per user:
 
 ```sql
--- SELECT 
+SELECT 
 Id,
 COUNT (DISTINCT (DATE(date))) AS night_logged
 FROM `more-practice-project-494921.Bellabeat_study.minuteSleep_clean_parse` 
@@ -114,7 +114,7 @@ ORDER BY night_logged
 Users grouped by nights logged:
 
 ```sql
--- SELECT
+SELECT
 CASE
 WHEN night_logged>=28 THEN '28-33 night_logged'
 WHEN night_logged>=15 THEN '15-27 night_logged'
