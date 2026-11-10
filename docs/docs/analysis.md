@@ -106,7 +106,7 @@ Nights logged per user:
 SELECT 
 Id,
 COUNT (DISTINCT (DATE(date))) AS night_logged
-FROM `more-practice-project-494921.Bellabeat_study.minuteSleep_clean_parse` 
+FROM `Bellabeat_study.minuteSleep_clean_parse` 
 GROUP BY Id
 ORDER BY night_logged
 ```
@@ -125,7 +125,7 @@ FROM
 (SELECT 
 Id,
 COUNT (DISTINCT (DATE(date))) AS night_logged
-FROM `more-practice-project-494921.Bellabeat_study.minuteSleep_clean_parse` 
+FROM `Bellabeat_study.minuteSleep_clean_parse` 
 GROUP BY Id
 ORDER BY night_logged)
 GROUP BY sleep_group
