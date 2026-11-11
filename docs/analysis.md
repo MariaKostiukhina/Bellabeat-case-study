@@ -82,6 +82,8 @@ GROUP BY usage_group
 
 **Takeaway:** the majority of users (21 of 34, 62%) wore the tracker on 28–32 of the 32 days, so most people use it almost daily. 8 users (24%) wore it 15–27 days, and 5 users (14%) fewer than 15 days.
 
+![Number of users per tracked metric](../images/Viz2.png)
+
 ## Also checked: activity by hour of day
 
 Average steps per hour of the day across all users, to see whether reminders at specific hours would make sense.
@@ -142,3 +144,5 @@ GROUP BY sleep_group
 | under 15 | 7 | 30% |
 
 **Takeaway:** 23 of 35 users logged sleep at all. Among them 9 (40%) logged 28–33 nights, 7 (30%) logged 15–27 nights and 7 (30%) fewer than 15. Counted over all 35 users, only 9 (26%) logged sleep almost every night, versus 62% who wore the tracker almost every day.
+
+![Number of users per tracked metric](../images/Viz3.png)
