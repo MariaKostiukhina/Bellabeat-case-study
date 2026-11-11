@@ -76,11 +76,11 @@ GROUP BY usage_group
 
 | Days worn | Users | Share |
 |---|---|---|
-| 28-32 days | 21 | 62% |
-| 15-27 days | 8 | 24% |
-| under 15 days | 5 | 14% |
+| 28-32 days | 21 | 61,8% |
+| 15-27 days | 8 | 23,5% |
+| under 15 days | 5 | 14,7% |
 
-**Takeaway:** the majority of users (21 of 34, 62%) wore the tracker on 28–32 of the 32 days, so most people use it almost daily. 8 users (24%) wore it 15–27 days, and 5 users (14%) fewer than 15 days.
+**Takeaway:** the majority of users (21 of 34, 61,8%) wore the tracker on 28–32 of the 32 days, so most people use it almost daily. 8 users (23,5%) wore it 15–27 days, and 5 users (14,7%) fewer than 15 days.
 
 ![Number of users per tracked metric](../images/Viz2.png)
 
