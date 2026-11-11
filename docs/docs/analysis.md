@@ -27,6 +27,8 @@ SELECT
 
 **Takeaway:** All 35 users track activity, but only two thirds track sleep, 40% heart rate and under a third weight. Activity is the core feature people use; the others reach far fewer users.
 
+![Number of users per tracked metric](../images/Viz1.png)
+
 ## Finding 2: how regularly do people wear the tracker?
 
 A "worn day" is a day with more than zero steps in the hourly data (zero-step days are treated as the tracker not being worn). Hourly tables are used because `dailyActivity` contains only 457 of the 1,021 user-days they cover (see `data_checks.md`, section 6). The period is 32 days.
