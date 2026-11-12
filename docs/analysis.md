@@ -138,3 +138,5 @@ GROUP BY sleep_group
 ![How regularly do people log sleep](../images/Viz3.png)
 
 **Takeaway:** Only 9 of 35 users (26%) logged sleep almost every night, and 12 (34%) logged none. For comparison, 21 of 34 users (62%) wore the tracker almost every day (Finding 2).
+
+![Number of users per tracked metric](../images/Viz3.png)
