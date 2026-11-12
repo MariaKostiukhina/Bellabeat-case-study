@@ -100,49 +100,41 @@ ORDER BY hour_of_day
 
 **Takeaway:** daytime activity is fairly even across all users (about 390–530 steps per hour between 9h and 19h), and the data does not show a clear inactive period. The profession of the users is unknown, so no conclusion about sedentary work is drawn. Reminders at specific hours are not recommended based on this check.
 
-## Finding 3: how regularly do people log sleep?
+## Finding 3: Sleep logging is the least regular habit
 
-Sleep is recorded minute by minute; a night is counted as a calendar date with at least one sleep record, so counts are approximate (the sleep data starts one day before the activity data).
+**Question:** How regularly do users log sleep, counting all 35 users?
 
-Nights logged per user:
-
-```sql
-SELECT 
-Id,
-COUNT (DISTINCT (DATE(date))) AS night_logged
-FROM `Bellabeat_study.minuteSleep_clean_parse` 
-GROUP BY Id
-ORDER BY night_logged
-```
-
-Users grouped by nights logged:
+Users with no sleep records at all are included as a separate group (they are missing from `minuteSleep`, so a plain `GROUP BY` would drop them).
 
 ```sql
+WITH all_users AS (
+  SELECT DISTINCT Id FROM `Bellabeat_study.dailyActivity_merged`
+),
+sleep_nights AS (
+  SELECT Id, COUNT(DISTINCT DATE(date)) AS nights
+  FROM `Bellabeat_study.minuteSleep_clean_parse`
+  GROUP BY Id
+)
 SELECT
-CASE
-WHEN night_logged>=28 THEN '28-33 night_logged'
-WHEN night_logged>=15 THEN '15-27 night_logged'
-ELSE 'less 15 night_logged'
-END AS sleep_group,
-COUNT(*) AS users
-FROM
-(SELECT 
-Id,
-COUNT (DISTINCT (DATE(date))) AS night_logged
-FROM `Bellabeat_study.minuteSleep_clean_parse` 
-GROUP BY Id
-ORDER BY night_logged)
+  CASE
+    WHEN s.nights IS NULL THEN 'no sleep data'
+    WHEN s.nights >= 28 THEN '28-33 nights'
+    WHEN s.nights >= 15 THEN '15-27 nights'
+    ELSE 'under 15 nights'
+  END AS sleep_group,
+  COUNT(*) AS users
+FROM all_users AS a
+LEFT JOIN sleep_nights AS s ON a.Id = s.Id
 GROUP BY sleep_group
 ```
 
-**Result:**
-
-| Nights logged | Users | Share of 23 |
+| Sleep group | Users | Share of 35 |
 |---|---|---|
-| 28–33 | 9 | 39,1% |
-| 15–27 | 7 | 30,4% |
-| under 15 | 7 | 30,4% |
+| 28-33 nights | 9 | 25,7% |
+| 15-27 nights | 7 | 20,0% |
+| under 15 nights | 7 | 20,0% |
+| no sleep data | 12 | 34,3% |
 
-**Takeaway:** 23 of 35 users logged sleep at all. Among them 9 (39,1%) logged 28–33 nights, 7 (30,4%) logged 15–27 nights and 7 (30,4%) fewer than 15. Counted over all 35 users, only 9 (26%) logged sleep almost every night, versus 62% who wore the tracker almost every day.
+![How regularly do people log sleep](../images/Viz3.png)
 
-![Number of users per tracked metric](../images/Viz3.png)
+**Takeaway:** Only 9 of 35 users (26%) logged sleep almost every night, and 12 (34%) logged none. For comparison, 21 of 34 users (62%) wore the tracker almost every day (Finding 2).
