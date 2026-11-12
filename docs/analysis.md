@@ -82,6 +82,8 @@ GROUP BY usage_group
 
 **Takeaway:** the majority of users (21 of 34, 61,8%) wore the tracker on 28–32 of the 32 days, so most people use it almost daily. 8 users (23,5%) wore it 15–27 days, and 5 users (14,7%) fewer than 15 days.
 
+Note: 34 of 35 users are counted. User 4388161847 is missing from the hourly tables (see data_checks.md, section 6)
+
 ![Number of users per tracked metric](../images/Viz2.png)
 
 ## Also checked: activity by hour of day
