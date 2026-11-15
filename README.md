@@ -31,6 +31,6 @@ Small sample (35 users): pilot each recommendation before rolling it out.
 
 ## Files
 
-- [Presentation (PDF)](presentation/ИМЯ_ФАЙЛА.pdf)
+- [Presentation (PDF)](presentation/Bellabeat_case_study.pdf)
 - [Analysis: queries, results, charts](docs/analysis.md)
 - [Data checks and cleaning](docs/data_checks.md)
